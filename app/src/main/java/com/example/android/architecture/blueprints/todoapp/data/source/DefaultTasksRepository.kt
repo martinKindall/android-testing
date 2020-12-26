@@ -42,6 +42,8 @@ class DefaultTasksRepository(
         @Volatile
         private var INSTANCE: DefaultTasksRepository? = null
 
+        // Is this unnecessary when using Hilt?
+        // Could Hilt create a Singleton DefultTasksRepo?
         fun getRepository(app: Application): DefaultTasksRepository {
             return INSTANCE ?: synchronized(this) {
                 val database = Room.databaseBuilder(app,
