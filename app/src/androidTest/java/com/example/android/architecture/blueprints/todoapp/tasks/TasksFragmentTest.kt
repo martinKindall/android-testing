@@ -66,4 +66,25 @@ class TasksFragmentTest {
                 TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment("id1")
         )
     }
+
+    @Test
+    fun clickAddTaskButton_navigateToAddEditFragment() = runBlockingTest {
+        repository.saveTask(Task("TITLE1", "DESCRIPTION1", false, "id1"))
+        repository.saveTask(Task("TITLE2", "DESCRIPTION2", true, "id2"))
+
+        val scenario = launchFragmentInContainer<TasksFragment>(Bundle(), R.style.AppTheme)
+        val navController = mock(NavController::class.java)
+
+        scenario.onFragment {
+            Navigation.setViewNavController(it.view!!, navController)
+        }
+
+        onView(withId(R.id.add_task_fab))
+                .perform(click())
+
+        verify(navController).navigate(
+                TasksFragmentDirections
+                        .actionTasksFragmentToAddEditTaskFragment(null, "New Task")
+        )
+    }
 }
